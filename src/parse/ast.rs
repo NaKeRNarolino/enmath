@@ -1,4 +1,4 @@
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum ASTNode {
     BinaryExpression {
         left: Box<ASTNode>,
@@ -9,26 +9,44 @@ pub enum ASTNode {
     Identifier(String),
     AssignmentProp(
         AssignmentProp
-    )
+    ),
+    Program(Vec<ASTNode>),
+    FunctionCall {
+        name: String,
+        args: Vec<ASTNode>,
+    },
+    FunctionDefinition {
+        name: String,
+        args: Vec<String>,
+        body: Box<ASTNode>,
+    }
 }
 
 impl ASTNode {
-    pub fn try_string(&self) -> Result<String, ()> {
+    pub fn try_string(&self) -> Option<String> {
         if let Self::Identifier(v) = self {
-            Ok(v.to_string())
+            Some(v.to_string())
         } else {
-            Err(())
+            None
+        }
+    }
+    
+    pub fn try_program(&self) -> Option<Vec<ASTNode>> {
+        if let Self::Program(v) = self {
+            Some(v.clone())
+        } else {
+            None
         }
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum AssignmentProp {
     Identifier(String),
-    Function
+    Function(String, Vec<String>)
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Operation {
     Add,
     Sub,

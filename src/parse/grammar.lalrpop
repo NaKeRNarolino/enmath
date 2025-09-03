@@ -1,12 +1,41 @@
 grammar;
 
-use super::ast::{ASTNode, Operation, AssignmentProp};
+use super::ast::{ASTNode, Operation};
+use super::tokens::Tokens;
 
-pub Ident: ASTNode = r"[a-zA-Z_][a-zA-Z0-9_]*" => ASTNode::Identifier(<>.to_string());
+// === Tokens mapped into AST ===
 
-pub Num: ASTNode = r"[0-9]+(\.[0-9]+)?" => ASTNode::NumericLiteral(str::parse::<f64>(<>).unwrap());
+pub Ident: ASTNode = r"[a-zA-Z_][a-zA-Z0-9_]*"
+    => ASTNode::Identifier(<>.to_string());
 
-pub Expr: ASTNode = Assignment;
+pub Num: ASTNode = r"[0-9]+(\.[0-9]+)?"
+    => ASTNode::NumericLiteral(<>);
+
+// === Whitespace / Newlines ===
+
+pub Newline: () = r"[ \t]*\r?\n";
+pub Newlines: () = Newline+;
+
+// === Program ===
+
+pub Program: ASTNode = {
+    <mut v:(<Statement> Newlines)*> <last:Statement?> => {
+        if let Some(e) = last { v.push(e); }
+        ASTNode::Program(v)
+    }
+};
+
+// === Statements (top-level only) ===
+
+pub Statement: ASTNode = {
+    FuncDefinition,
+    VarAssignment,
+    Expr
+};
+
+// === Expressions ===
+
+pub Expr: ASTNode = AddExpr;
 
 pub AddExpr: ASTNode = {
     <l: AddExpr> "+" <r: MulExpr> => ASTNode::BinaryExpression {
@@ -23,35 +52,107 @@ pub AddExpr: ASTNode = {
 };
 
 pub MulExpr: ASTNode = {
-    <l: MulExpr> "*" <r: Factor> => ASTNode::BinaryExpression {
+    <l: MulExpr> "*" <r: FunctionCall> => ASTNode::BinaryExpression {
         left: Box::new(l),
         right: Box::new(r),
         operation: Operation::Mul
     },
-    <l: MulExpr> "/" <r: Factor> => ASTNode::BinaryExpression {
+    <l: MulExpr> "/" <r: FunctionCall> => ASTNode::BinaryExpression {
         left: Box::new(l),
         right: Box::new(r),
         operation: Operation::Div
     },
+    FunctionCall
+};
+
+// === Assignment & Functions ===
+
+pub VarAssignment: ASTNode = {
+    <prop: Ident> "=" <r: AddExpr> => ASTNode::BinaryExpression {
+        left: Box::new(prop),
+        right: Box::new(r),
+        operation: Operation::Assign
+    }
+};
+
+// Function definition: requires "=" after ")"
+pub FuncDefinition: ASTNode = {
+    <prop: Ident> "[" <params: ParamList?> "]" "=" <body: Expr> => {
+        let parameters = params.unwrap_or_default();
+        ASTNode::FunctionDefinition {
+            name: prop.try_string().unwrap(),
+            args: parameters.into_iter()
+                .map(|x| x.try_string().unwrap())
+                .collect(),
+            body: Box::new(body)
+        }
+    }
+};
+
+// Helper for function parameter lists
+pub ParamList: Vec<ASTNode> = {
+    <first: Ident> <rest: ("," Ident)*> => {
+        let mut v = vec![first];
+        for (_, id) in rest {
+            v.push(id);
+        }
+        v
+    }
+};
+
+// === Calls ===
+
+pub FunctionCall: ASTNode = {
+    <i: Ident> "(" <args: ArgList?> ")" => {
+        let arguments = args.unwrap_or_default();
+        ASTNode::FunctionCall { name: i.try_string().unwrap(), args: arguments }
+    },
     Factor
 };
 
-pub Factor: ASTNode = {
+// Helper for function call arguments
+pub ArgList: Vec<ASTNode> = {
+    <first: Expr> <rest: ("," Expr)*> => {
+        let mut v = vec![first];
+        for (_, e) in rest {
+            v.push(e);
+        }
+        v
+    }
+};
+
+// === Factors / values ===
+
+pub Value: ASTNode = {
     Num,
+    Ident
+};
+
+pub Factor: ASTNode = {
+    Value,
     "(" <Expr> ")"
 };
 
-pub Assignment: ASTNode = {
-    <l: AssignmentProp> "=" <r: AddExpr> => ASTNode::BinaryExpression {
-        left: Box::new(l),
-        right: Box::new(r),
-        operation: Operation::Assign
-    },
-    AddExpr
-}
+// === External lexer bindings ===
 
-pub AssignmentProp: ASTNode = {
-    <i: Ident> => ASTNode::AssignmentProp(
-        AssignmentProp::Identifier(i.try_string().unwrap())
-    )
-};
+extern {
+    type Location = usize;
+    type Error = String;
+    enum Tokens {
+        r"[a-zA-Z_][a-zA-Z0-9_]*" => Tokens::Ident(<String>),
+        r"[0-9]+(\.[0-9]+)?" => Tokens::Number(<f64>),
+        "+" => Tokens::Add,
+        "-" => Tokens::Sub,
+        "*" => Tokens::Mul,
+        "/" => Tokens::Div,
+        "=" => Tokens::Assign,
+        "(" => Tokens::LParen,
+        ")" => Tokens::RParen,
+        "[" => Tokens::LBracket,
+        "]" => Tokens::RBracket,
+        "," => Tokens::Comma,
+        "." => Tokens::Dot,
+        r"[ \t]*\r?\n" => Tokens::Newline,
+        "__EOF__" => Tokens::EOF,
+    }
+}

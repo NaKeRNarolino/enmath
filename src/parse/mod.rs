@@ -1,6 +1,7 @@
 use lalrpop_util::lalrpop_mod;
 
-mod ast;
+pub mod ast;
+pub mod tokens;
 
-lalrpop_mod!(pub grammar, "/parser/grammar.rs");
+lalrpop_mod!(pub grammar, "/parse/grammar.rs");
 
