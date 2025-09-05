@@ -28,7 +28,7 @@ pub Program: ASTNode = {
 // === Statements (top-level only) ===
 
 pub Statement: ASTNode = {
-    FuncDefinition,
+    FunctionCall,
     VarAssignment,
     Expr
 };
@@ -106,6 +106,16 @@ pub FunctionCall: ASTNode = {
     <i: Ident> "(" <args: ArgList?> ")" => {
         let arguments = args.unwrap_or_default();
         ASTNode::FunctionCall { name: i.try_string().unwrap(), args: arguments }
+    },
+    <i: Ident> "(" <params: ParamList?> ")" "=" <body: Expr> => {
+        let parameters = params.unwrap_or_default();
+        ASTNode::FunctionDefinition {
+            name: i.try_string().unwrap(),
+            args: parameters.into_iter()
+                .map(|x| x.try_string().unwrap())
+                .collect(),
+            body: Box::new(body)
+        }
     },
     Factor
 };

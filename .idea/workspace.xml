@@ -11,14 +11,14 @@
     </cargoProject>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="83b06ee1-021b-4b34-bee2-b1d4f7bd68b7" name="Changes" comment="">
-      <change afterPath="$USER_HOME$/home/nakernarolino/RustroverProjects/enmath/src/interpret/scope.rs" afterDir="false" />
-      <change afterPath="$USER_HOME$/home/nakernarolino/RustroverProjects/enmath/src/interpret/value.rs" afterDir="false" />
-      <change beforePath="$USER_HOME$/home/nakernarolino/RustroverProjects/enmath/README.md" beforeDir="false" afterPath="$USER_HOME$/home/nakernarolino/RustroverProjects/enmath/README.md" afterDir="false" />
-      <change beforePath="$USER_HOME$/home/nakernarolino/RustroverProjects/enmath/build.rs" beforeDir="false" afterPath="$USER_HOME$/home/nakernarolino/RustroverProjects/enmath/build.rs" afterDir="false" />
+    <list default="true" id="83b06ee1-021b-4b34-bee2-b1d4f7bd68b7" name="Changes" comment="function support">
+      <change beforePath="$USER_HOME$/home/nakernarolino/RustroverProjects/enmath/.idea/workspace.xml" beforeDir="false" afterPath="$USER_HOME$/home/nakernarolino/RustroverProjects/enmath/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$USER_HOME$/home/nakernarolino/RustroverProjects/enmath/Cargo.lock" beforeDir="false" afterPath="$USER_HOME$/home/nakernarolino/RustroverProjects/enmath/Cargo.lock" afterDir="false" />
+      <change beforePath="$USER_HOME$/home/nakernarolino/RustroverProjects/enmath/Cargo.toml" beforeDir="false" afterPath="$USER_HOME$/home/nakernarolino/RustroverProjects/enmath/Cargo.toml" afterDir="false" />
+      <change beforePath="$USER_HOME$/home/nakernarolino/RustroverProjects/enmath/build.rs" beforeDir="false" />
       <change beforePath="$USER_HOME$/home/nakernarolino/RustroverProjects/enmath/examples/basic.emat" beforeDir="false" afterPath="$USER_HOME$/home/nakernarolino/RustroverProjects/enmath/examples/basic.emat" afterDir="false" />
       <change beforePath="$USER_HOME$/home/nakernarolino/RustroverProjects/enmath/src/interpret/mod.rs" beforeDir="false" afterPath="$USER_HOME$/home/nakernarolino/RustroverProjects/enmath/src/interpret/mod.rs" afterDir="false" />
-      <change beforePath="$USER_HOME$/home/nakernarolino/RustroverProjects/enmath/src/parse/ast.rs" beforeDir="false" afterPath="$USER_HOME$/home/nakernarolino/RustroverProjects/enmath/src/parse/ast.rs" afterDir="false" />
+      <change beforePath="$USER_HOME$/home/nakernarolino/RustroverProjects/enmath/src/main.rs" beforeDir="false" afterPath="$USER_HOME$/home/nakernarolino/RustroverProjects/enmath/src/main.rs" afterDir="false" />
       <change beforePath="$USER_HOME$/home/nakernarolino/RustroverProjects/enmath/src/parse/grammar.lalrpop" beforeDir="false" afterPath="$USER_HOME$/home/nakernarolino/RustroverProjects/enmath/src/parse/grammar.lalrpop" afterDir="false" />
       <change beforePath="$USER_HOME$/home/nakernarolino/RustroverProjects/enmath/src/parse/mod.rs" beforeDir="false" afterPath="$USER_HOME$/home/nakernarolino/RustroverProjects/enmath/src/parse/mod.rs" afterDir="false" />
       <change beforePath="$USER_HOME$/home/nakernarolino/RustroverProjects/enmath/src/parse/tokens.rs" beforeDir="false" afterPath="$USER_HOME$/home/nakernarolino/RustroverProjects/enmath/src/parse/tokens.rs" afterDir="false" />
@@ -65,7 +65,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Cargo.Run enmath.executor": "Debug",
+    "Cargo.Run enmath.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -140,11 +140,37 @@
       <workItem from="1756828655155" duration="3336000" />
       <workItem from="1756832373214" duration="9440000" />
       <workItem from="1756911676154" duration="9466000" />
-      <workItem from="1756921162441" duration="3730000" />
+      <workItem from="1756921162441" duration="4249000" />
+      <workItem from="1756998986317" duration="9702000" />
+      <workItem from="1757080780450" duration="1412000" />
     </task>
+    <task id="LOCAL-00001" summary="function support">
+      <option name="closed" value="true" />
+      <created>1756924916534</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1756924916534</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="function support" />
+    <option name="LAST_COMMIT_MESSAGE" value="function support" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$USER_HOME$/home/nakernarolino/RustroverProjects/enmath/src/parse/mod.rs</url>
+          <line>176</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

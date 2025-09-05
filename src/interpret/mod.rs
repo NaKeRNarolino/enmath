@@ -106,7 +106,7 @@ impl Interpreter {
     }
     
     fn eval_fn_call(&self, name: String, args: Vec<ASTNode>, scope: RuntimeScope) -> RuntimeValue {
-        match scope.read().unwrap().get_variable(&name).unwrap().value {
+        match scope.read().unwrap().get_variable(&name).expect("Variable not found.").value {
             RuntimeValue::Function(fun) => {
                 let program = vec![(*fun.body).clone()];
 

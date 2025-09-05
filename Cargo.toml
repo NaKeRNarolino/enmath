@@ -3,9 +3,6 @@ name = "enmath"
 version = "0.1.0"
 edition = "2024"
 
-
-[build-dependencies]
-lalrpop = "0.22.2"
-
 [dependencies]
-lalrpop-util = { version = "0.21.0", features = ["lexer", "unicode"] }
+logos = "0.15.1"
+itertools = "0.14.0"
